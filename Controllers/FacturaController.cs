@@ -1,14 +1,23 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OrderApiApp2.Models;
 
 namespace OrderApiApp2.Controllers
 {
     public class FacturaController : Controller
     {
+        private readonly ApplicationContext _context;
+        public FacturaController(ApplicationContext context)
+        {
+            _context = context;
+        }
+
         // GET: FacturaController
         public ActionResult Index()
         {
-            return View();
+            List<Factura> facturas;
+            facturas = _context.Factura.ToList();
+            return View(facturas);
         }
 
         // GET: FacturaController/Details/5
@@ -18,24 +27,22 @@ namespace OrderApiApp2.Controllers
         }
 
         // GET: FacturaController/Create
-        public ActionResult Create()
+        [HttpGet]
+        public IActionResult Create()
         {
-            return View();
+            Factura factura = new Factura();
+
+            return View(factura);
         }
 
         // POST: FacturaController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create(Factura factura)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _context.Add(factura);
+            _context.SaveChanges();
+            return RedirectToAction("index");
         }
 
         // GET: FacturaController/Edit/5

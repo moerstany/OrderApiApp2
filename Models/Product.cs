@@ -34,9 +34,10 @@ namespace OrderApiApp2.Models
         [StringLength(900)]
         public string ProdPic { get; set; }
 
-        [Required(ErrorMessage ="Choose the Profile Fhoto")]
-        [Display(Name ="Profile Photo")]
-        []
+        [Required(ErrorMessage ="Choose the Product Fhoto")]
+        [Display(Name = "Product Photo")]
+        [NotMapped]
+        public IFormFile ProductPhoto { get; set; }
         [InverseProperty("IdProductNavigation")]
         public virtual ICollection<Factura> Factura { get; set; }
     }

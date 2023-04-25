@@ -1,14 +1,23 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OrderApiApp2.Models;
 
 namespace OrderApiApp2.Controllers
 {
     public class OrderController : Controller
     {
+        private readonly ApplicationContext _context;
+        public OrderController(ApplicationContext context)
+        {
+            _context = context;
+        }
+
         // GET: OrderController
         public ActionResult Index()
         {
-            return View();
+            List<Orders> orders;
+            orders = _context.Orders.ToList();
+            return View(orders);
         }
 
         // GET: OrderController/Details/5
@@ -18,25 +27,24 @@ namespace OrderApiApp2.Controllers
         }
 
         // GET: OrderController/Create
-        public ActionResult Create()
+        [HttpGet]
+        public IActionResult Create()
         {
-            return View();
+            Orders orders = new Orders();
+
+            return View(orders);
         }
 
         // POST: OrderController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create(Orders orders)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _context.Add(orders);
+            _context.SaveChanges();
+            return RedirectToAction("index");
         }
+
 
         // GET: OrderController/Edit/5
         public ActionResult Edit(int id)
