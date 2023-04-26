@@ -48,20 +48,30 @@ namespace OrderApiApp2.Controllers
         // GET: FacturaController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+
+            Factura factura = _context.Factura.Find(id);
+            return View(factura);
         }
 
         // POST: FacturaController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Factura factura)
         {
             try
             {
+                Factura fac = _context.Factura.Find(factura.IdFactura);
+                fac.IdFactura = factura.IdFactura;
+                fac.ProductName = factura.ProductName;
+                fac.Articul=factura.Articul;
+                fac.Qantity = factura.Qantity;
+                fac.IdClient= factura.IdClient;
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
+
                 return View();
             }
         }
@@ -69,7 +79,9 @@ namespace OrderApiApp2.Controllers
         // GET: FacturaController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            _context.Factura.Remove(_context.Factura.Find(id));
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: FacturaController/Delete/5

@@ -48,20 +48,30 @@ namespace OrderApiApp2.Controllers
         // GET: ProductController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+
+            Product product = _context.Product.Find(id);
+            return View(product);
         }
 
-        // POST: ProductController/Edit/5
+        // POST: FacturaController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Product product)
         {
             try
             {
+                Product pr = _context.Product.Find(product.IdProduct);
+                pr.IdProduct = product.IdProduct;
+                pr.ProductName = product.ProductName;
+                pr.Articul=product.Articul;
+                pr.Cost=product.Cost;
+                pr.ProdPic=product.ProdPic;
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
+
                 return View();
             }
         }
@@ -69,7 +79,9 @@ namespace OrderApiApp2.Controllers
         // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            _context.Product.Remove(_context.Product.Find(id));
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: ProductController/Delete/5
