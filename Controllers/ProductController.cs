@@ -21,6 +21,7 @@ namespace OrderApiApp2.Controllers
         public ActionResult Create()
         {
             return View();
+
         }
 
         // POST: ProductController/Create
