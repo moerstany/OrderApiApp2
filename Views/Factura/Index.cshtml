@@ -1,8 +1,64 @@
-﻿
+﻿@model IEnumerable<OrderApiApp2.Models.Factura>
+
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Home/Index.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Factura</h1>
 
+<p>
+    <a href="@Url.Action("Create","Factura","Factura")" class="btn btn-outline-secondary">Create new</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articul)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Qantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdClientNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdOrderNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProductNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Articul)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdClientNavigation.ClientName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdOrderNavigation.IdOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProductNavigation.Articul)
+            </td>
+            <td>
+                    |<a href="@Url.Action("Edit","Factura",new {@id=item.IdFactura})" class="btn btn-outline-success">Edit</a>
+                    |<a href="@Url.Action("Delete","Factura",new {@id=item.IdFactura})" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete @item.ProductName?')">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

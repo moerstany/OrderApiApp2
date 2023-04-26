@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OrderApiApp2.Migrations;
 using OrderApiApp2.Models;
+using System.Net.Sockets;
 
 namespace OrderApiApp2.Controllers
 {
@@ -46,23 +48,28 @@ namespace OrderApiApp2.Controllers
                  return RedirectToAction("index");
         }
 
-        // GET: ClientController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            
+            Client client =_context.Client.Find(id);
+            return View(client);
         }
 
-        // POST: ClientController/Edit/5
+        // POST: FacturaController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Client client)
         {
             try
             {
+                Client cli = _context.Client.Find(client.IdClient);
+                cli.ClientName = client.ClientName;
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
+               
                 return View();
             }
         }
@@ -70,7 +77,9 @@ namespace OrderApiApp2.Controllers
         // GET: ClientController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            _context.Client.Remove(_context.Client.Find(id));
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: ClientController/Delete/5

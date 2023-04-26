@@ -1,0 +1,40 @@
+﻿@model IEnumerable<OrderApiApp2.Models.Orders>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Orders</h1>
+
+<p>
+    <a href="@Url.Action("Create","Order","Orders")" class="btn btn-outline-secondary">Create new</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdClientNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdClientNavigation.ClientName)
+            </td>
+            <td>
+                    |<a href="@Url.Action("Edit","Order",new {@id=item.IdOrder})" class="btn btn-outline-success">Edit</a>
+                    |<a href="@Url.Action("Delete","Order",new {@id=item.IdOrder})" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete @item.Description?')">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

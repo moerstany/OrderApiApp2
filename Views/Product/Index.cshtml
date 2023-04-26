@@ -1,0 +1,52 @@
+﻿@model IEnumerable<OrderApiApp2.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Products</h1>
+
+<p>
+    <a href="@Url.Action("Create","Product","Product")" class="btn btn-outline-secondary">Create new</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articul)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProdPic)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Articul)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+               <img src="@Html.DisplayFor(modelItem => item.ProdPic)" width="100" height="100" alt="картинка"/>
+            </td>
+            <td>
+                    |<a href="@Url.Action("Edit","Product",new {@id=item.IdProduct})" class="btn btn-outline-success">Edit</a>
+                    |<a href="@Url.Action("Delete","Product",new {@id=item.IdProduct})" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete @item.ProductName?')">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

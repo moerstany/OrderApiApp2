@@ -1,14 +1,23 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OrderApiApp2.Models;
 
 namespace OrderApiApp2.Controllers
 {
     public class FacturaController : Controller
     {
+        private readonly ApplicationContext _context;
+        public FacturaController(ApplicationContext context)
+        {
+            _context = context;
+        }
+
         // GET: FacturaController
         public ActionResult Index()
         {
-            return View();
+            List<Factura> facturas;
+            facturas = _context.Factura.ToList();
+            return View(facturas);
         }
 
         // GET: FacturaController/Details/5
@@ -18,43 +27,51 @@ namespace OrderApiApp2.Controllers
         }
 
         // GET: FacturaController/Create
-        public ActionResult Create()
+        [HttpGet]
+        public IActionResult Create()
         {
-            return View();
+            Factura factura = new Factura();
+
+            return View(factura);
         }
 
         // POST: FacturaController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create(Factura factura)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _context.Add(factura);
+            _context.SaveChanges();
+            return RedirectToAction("index");
         }
 
         // GET: FacturaController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+
+            Factura factura = _context.Factura.Find(id);
+            return View(factura);
         }
 
         // POST: FacturaController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Factura factura)
         {
             try
             {
+                Factura fac = _context.Factura.Find(factura.IdFactura);
+                fac.IdFactura = factura.IdFactura;
+                fac.ProductName = factura.ProductName;
+                fac.Articul=factura.Articul;
+                fac.Qantity = factura.Qantity;
+                fac.IdClient= factura.IdClient;
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
+
                 return View();
             }
         }
@@ -62,7 +79,9 @@ namespace OrderApiApp2.Controllers
         // GET: FacturaController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            _context.Factura.Remove(_context.Factura.Find(id));
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: FacturaController/Delete/5
